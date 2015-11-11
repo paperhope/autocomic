@@ -9,12 +9,15 @@ class AutoComic(object):
     """
     def __init__(self, script):
         self.script = script
+        self.panels = [Panel(text) for text in self.split_script_into_elements()]
 
     def split_script_into_elements(self):
-        pass
+        
+        return list(self.script)
 
     def press(self):
-        pass
+        for panel in self.panels:
+            print "something"
 
 
 class Panel(object):
@@ -39,7 +42,7 @@ def main():
     for line in script: print line
 
     autocomic = AutoComic(script)
-    autocomic.draw()
+    autocomic.press()
     
 if __name__ == "__main__":
     main()
