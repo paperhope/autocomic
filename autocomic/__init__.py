@@ -47,7 +47,7 @@ class GooglePanel(Panel):
         self.search = search
         
     def find_art(self):
-        self.art = search.get_image(self.text)
+        self.art = self.search.get_image(self.text)
 
         print "Image: %s" % self.art
 
@@ -72,7 +72,7 @@ class GooglePanelFactory(object):
 
     def create_panel(self, text):
 
-        return GooglePanel(text, search)
+        return GooglePanel(text, self.search)
 
 
 def config_values(config_file):
@@ -90,11 +90,12 @@ def config_values(config_file):
 
 def main():
 
+    parser = argparse.ArgumentParser()
     parser.add_argument('--config', default='autocomic.ini',
                    help='path to config file in ini format')
 
-    parser.parse_args()
-    google_engine, client_key = config_values(config)
+    args = parser.parse_args()
+    search_engine_id, client_key = config_values(args.config)
     
     print("Give me a story:")
 
@@ -102,8 +103,10 @@ def main():
     for line in sys.stdin:
         script.append(line)
 
-    search = googlesearch.GoogleSearch(cx=google_engine, key=client_key)
-    autocomic = AutoComic(script, search)
+    search = googlesearch.GoogleCustomSearch(cx=search_engine_id, api_key=client_key)
+    googlepanel_factory = GooglePanelFactory(search)
+
+    autocomic = AutoComic(script, googlepanel_factory)
     autocomic.get_good_art()
 
     print "Number of panels: %s" % len(autocomic.panels)
