@@ -1,6 +1,7 @@
 # Custom rules
 virtualenv/
 py3env/
+autocomic/autocomic.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
