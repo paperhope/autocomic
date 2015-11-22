@@ -1,9 +1,9 @@
 import sys
 import requests
-import ConfigParser
+import configparser
 import argparse
 
-import googlesearch
+import autocomic.googlesearch
 
 
 class AutoComic(object):
@@ -49,8 +49,6 @@ class GooglePanel(Panel):
     def find_art(self):
         self.art = self.search.get_image(self.text)
 
-        print "Image: %s" % self.art
-
 
 class PanelFactory(object):
 
@@ -81,7 +79,7 @@ def config_values(config_file):
     Raise exception if config values is missing from config file.
     """
 
-    config = ConfigParser.SafeConfigParser()
+    config = configparser.SafeConfigParser()
     config.read(config_file)
     
     return (config.get('googlesearch', 'search_engine_id'), 
@@ -109,7 +107,6 @@ def main():
     autocomic = AutoComic(script, googlepanel_factory)
     autocomic.get_good_art()
 
-    print "Number of panels: %s" % len(autocomic.panels)
 
 if __name__ == "__main__":
     main()

@@ -8,7 +8,7 @@ class GoogleCustomSearch(object):
       
       def __init__(self, api_key=None, cx=None):
 
-	  self.api_key = api_key
+          self.api_key = api_key
           self.cx = cx
           self.session = requests.Session()
           self.search_url = "%s?key=%s&cx=%s" % ( self.base_url, self.api_key, self.cx)
@@ -26,7 +26,7 @@ class GoogleCustomSearch(object):
           try:
                 response.raise_for_status()
           except requests.exceptions.HTTPError as e:
-                print "HTTP Error: Message in response: %s" % response.content
+                print ("HTTP Error: Message in response: %s" % response.text)
                 raise
 
           return response.content
@@ -37,8 +37,11 @@ class GoogleCustomSearch(object):
             return self._get(link)
 
       def _get_image_link(self, search_result):
-          result = json.loads(search_result)
-
+          try:
+              result = json.loads(search_result.decode("utf-8"))
+          except TypeError as e:
+                print ("Search result: %s" % search_result)
+                raise TypeError(search_result)
           image = result['items'][0]['link']
           
           return image

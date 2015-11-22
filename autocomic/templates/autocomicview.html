@@ -1,0 +1,14 @@
+<!doctype html>
+<title>Autocomic for the people</title>
+{% if autocomic is defined %}
+    {% for panel in autocomic.panels %}
+        <td>{{ panel.image }} 
+    {% endfor %}
+{% endif %}
+<form method="post">
+  Comic script: <textarea name="script" rows="10" cols="30">
+  {{script}}
+  </textarea>
+  <input type="submit"/>
+</form>
+</html>

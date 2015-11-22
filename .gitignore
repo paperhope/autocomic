@@ -1,5 +1,6 @@
 # Custom rules
 virtualenv/
+py3env/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
