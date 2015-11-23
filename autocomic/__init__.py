@@ -3,7 +3,7 @@ import requests
 import configparser
 import argparse
 
-import autocomic.googlesearch
+from autocomic.googlesearch import GoogleCustomSearch
 
 
 class AutoComic(object):
@@ -101,7 +101,7 @@ def main():
     for line in sys.stdin:
         script.append(line)
 
-    search = googlesearch.GoogleCustomSearch(cx=search_engine_id, api_key=client_key)
+    search = GoogleCustomSearch(cx=search_engine_id, api_key=client_key)
     googlepanel_factory = GooglePanelFactory(search)
 
     autocomic = AutoComic(script, googlepanel_factory)
