@@ -1,6 +1,7 @@
 import requests
 import json
 
+import autocomic.exceptions
 
 class GoogleCustomSearch(object):
       
@@ -14,6 +15,11 @@ class GoogleCustomSearch(object):
           self.search_url = "%s?key=%s&cx=%s" % ( self.base_url, self.api_key, self.cx)
 
       def get_image(self, query):
+          """"
+          Get an image based on the the parameter query text.
+          Return a dict with link, content-type and content.
+          """
+
           search_url = "%s&q=%s&searchType=image&imgSize=small" % (self.search_url, query)
           
           image = self._image_from_search_result(self._get(search_url))
@@ -32,16 +38,29 @@ class GoogleCustomSearch(object):
           return response.content
   
       def _image_from_search_result(self, search_result):
-            link = self._get_image_link(search_result)
+            link, mime = self._get_image_info(search_result)
             
-            return self._get(link)
+            content = self._get(link)
 
-      def _get_image_link(self, search_result):
+            _image = {}
+            _image['link'] = link
+            _image['mime'] = mime
+            _image['content'] = content
+
+            return _image
+            
+      def _get_image_info(self, search_result):
           try:
               result = json.loads(search_result.decode("utf-8"))
           except TypeError as e:
-                print ("Search result: %s" % search_result)
-                raise TypeError(search_result)
-          image = result['items'][0]['link']
+              print ("Search result: %s" % search_result)
+              raise TypeError(search_result)
           
-          return image
+          try:
+              link = result['items'][0]['link']
+              fileFormat = result['items'][0]['mime']
+          except KeyError as e:
+              raise autocomic.exceptions.NoImageFound("No image for this result: %s" 
+                                                      % search_result)
+
+          return (link, fileFormat)

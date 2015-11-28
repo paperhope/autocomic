@@ -20,7 +20,7 @@ class AutoComic(object):
 
     def split_script_into_elements(self):
         
-        return list(self.script)
+        return [s.strip() for s in self.script if not s.isspace()]
 
     def get_good_art(self):
 
