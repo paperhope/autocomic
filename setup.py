@@ -10,6 +10,7 @@ setup(name='Autocomic',
       packages=['autocomic'],
       install_requires = [
           "requests",
+          "pillow"
           ]
           
      )

@@ -20,14 +20,14 @@ class GoogleCustomSearch(object):
           Return a dict with link, content-type and content.
           """
 
-          search_url = "%s&q=%s&searchType=image&imgSize=small" % (self.search_url, query)
+          search_url = "%s&q=%s&searchType=image&imgSize=medium" % (self.search_url, query)
           
           image = self._image_from_search_result(self._get(search_url))
           
           return image
 
       def _get(self, url):
-          response = self.session.get(url)
+          response = self.session.get(url, timeout=5)
           
           try:
                 response.raise_for_status()
