@@ -15,22 +15,22 @@ class AutoComic(object):
     Contain text story and all the comic elements based on this story
     """
     def __init__(self, script, panel_factory,  title="Autocomic for the people"):
-        self.script = script
+        self.script = self._strip_list(script)
         self._panel_factory = panel_factory
         self.title = title
 
     def initialize_panels(self):
 
         self.panels = []
-        for panel_text in self.split_script_into_elements():
+        for panel_text in self.script:
             try:
                 self.panels.append(self._panel_factory.create_panel(panel_text))
             except autocomic.exceptions.PanelCreationException as e:
                 self.panels.append(autocomic.EmptyPanel("No art for you: %s" % panel_text))
 
-    def split_script_into_elements(self):
+    def _strip_list(self, list):
 
-        return [s.strip() for s in self.script if not s.isspace()]
+        return [s.strip() for s in list if not s.isspace()]
 
     def set_panels_art(self):
 
